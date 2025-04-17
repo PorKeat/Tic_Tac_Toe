@@ -3,6 +3,7 @@ import java.util.Scanner;
 
 public class Main {
     private static final String [][] board = new String[3][3];
+    private static final boolean[][] winCell = new boolean[3][3];
     private static final Scanner scanner = new Scanner(System.in);
 
     private static void insertDefault(){
@@ -10,6 +11,7 @@ public class Main {
         for(int i = 0; i<board.length; i++) {
             for(int j = 0; j<board[i].length; j++) {
                 board[i][j] = String.format("%d", n++);
+                winCell[i][j] = false;
             }
         }
     }
@@ -17,17 +19,17 @@ public class Main {
     private static void view() {
         System.out.println("=".repeat(10)+"| Welcome to Tac Tac Toe | "+"=".repeat(10));
         System.out.print("|"+"-".repeat(11)+"|\n");
-        for (String[] strings : board) {
+        for (int i = 0; i < board.length; i++) {
             System.out.print("| ");
-            for (String string : strings) {
-                if (check(string)) {
-                    System.out.print("\u001B[33m" + string + "\u001B[0m" + " | ");
-                }else if(string.equals("X")) {
-                    System.out.print("\u001B[31m" + string + "\u001B[0m" + " | ");
-                } else if (string.equals("O")) {
-                    System.out.print("\u001B[34m" + string + "\u001B[0m" + " | ");
+            for (int j = 0; j < board[i].length; j++) {
+                if (winCell[i][j]) {
+                    System.out.print("\u001B[33m" + board[i][j] + "\u001B[0m" + " | ");
+                }else if(board[i][j].equals("X")) {
+                    System.out.print("\u001B[31m" + board[i][j] + "\u001B[0m" + " | ");
+                } else if (board[i][j].equals("O")) {
+                    System.out.print("\u001B[34m" + board[i][j] + "\u001B[0m" + " | ");
                 } else {
-                    System.out.print(string + " | ");
+                    System.out.print(board[i][j] + " | ");
                 }
             }
             System.out.print("\n|" + "-".repeat(11) + "|\n");
@@ -54,14 +56,30 @@ public class Main {
 
     private static boolean check(String mark) {
         for(int i = 0; i<board.length; i++) {
-            if(
-                    board[i][0].equals(mark) && board[i][1].equals(mark) && board[i][2].equals(mark) ||
-                    board[0][i].equals(mark) && board[1][i].equals(mark) && board[2][i].equals(mark) ||
-                    board[0][0].equals(mark) && board[1][1].equals(mark) && board[2][2].equals(mark) ||
-                    board[0][2].equals(mark) && board[1][1].equals(mark) && board[2][0].equals(mark)
-            ) {
+            if(board[i][0].equals(mark) && board[i][1].equals(mark) && board[i][2].equals(mark)) {
+                winCell[i][0] = true;
+                winCell[i][1] = true;
+                winCell[i][2] = true;
                 return true;
             }
+            if (board[0][i].equals(mark) && board[1][i].equals(mark) && board[2][i].equals(mark)){
+                winCell[0][i] = true;
+                winCell[1][i] = true;
+                winCell[2][i] = true;
+                return true;
+            }
+        }
+        if (board[0][0].equals(mark) && board[1][1].equals(mark) && board[2][2].equals(mark)){
+            winCell[0][0] = true;
+            winCell[1][1] = true;
+            winCell[2][2] = true;
+            return true;
+        }
+        if (board[0][2].equals(mark) && board[1][1].equals(mark) && board[2][0].equals(mark)){
+            winCell[0][2] = true;
+            winCell[1][1] = true;
+            winCell[2][0] = true;
+            return true;
         }
         return false;
     }
