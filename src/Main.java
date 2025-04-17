@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class Main {
     private static final String [][] board = new String[3][3];
-    private static final boolean[][] winCell = new boolean[3][3];
+    private static final Boolean[][] winCell = new Boolean[3][3];
     private static final Scanner scanner = new Scanner(System.in);
 
     private static void insertDefault(){
